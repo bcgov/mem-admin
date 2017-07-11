@@ -36,6 +36,7 @@ angular.module('documents')
 
 							$scope.originalName = obj.displayName;
 							$scope.doc = obj;
+							$scope.extension = $scope.doc.displayName.split('.').pop();
 							// any dates going to the datepicker need to be javascript Date objects...
 							$scope.doc.documentDate = _.isEmpty(obj.documentDate) ? null : moment(obj.documentDate).toDate();
 							$scope.datePicker = {
