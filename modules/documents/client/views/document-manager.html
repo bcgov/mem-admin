@@ -510,18 +510,16 @@
 											<li data-ng-repeat="category in documentMgr.infoPanel.data.documentCategories">{{category}}</li>
 										</ul>
 									</span>
-								</li>
-								<!--
-								<li>
-									<span class="name">File Name:</span>
-									<span class="value">{{ documentMgr.infoPanel.data.documentFileName }}</span>
-								</li>
-								-->
-								<li class="doc-keywords-list" ng-if="documentMgr.infoPanel.data.keywords">
-									<span class="name">Keyword(s):</span>
-									<ul>
-										<li data-ng-repeat="keyword in documentMgr.infoPanel.data.keywords">{{ keyword }}</li>
-									</ul>
+                </li>
+                <li>
+                  <span class="name">File Name:</span>
+                  <span class="value">{{ documentMgr.infoPanel.data.documentFileName }}</span>
+                </li>
+                <li class="doc-keywords-list" ng-if="documentMgr.infoPanel.data.keywords">
+                  <span class="name">Keyword(s):</span>
+                  <ul>
+                    <li data-ng-repeat="keyword in documentMgr.infoPanel.data.keywords">{{ keyword }}</li>
+                  </ul>
 								</li>
 								<li>
 									<span class="name">Collections:</span>
