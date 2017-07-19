@@ -225,6 +225,9 @@ function controllerProjectsList2($scope, NgTableParams, Authentication, _, ENV, 
 	projectList.phaseArray = [];
 	projectList.openPCPArray = [];
 
+	// Natural sort
+	var collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
+
 	$scope.$watch('projects', function(newValue) {
 		if (newValue) {
 			// add a pos for the map display
@@ -254,16 +257,39 @@ function controllerProjectsList2($scope, NgTableParams, Authentication, _, ENV, 
 				projectList.openPCPArray.push({id: item, title: item ? 'Open' : ''});
 			});
 
-			if ($scope.$parent.filterObj) {
-				projectList.tableParams = new NgTableParams ({
-					count: 10,
-					filter: $scope.$parent.filterObj
-				}, {dataset: newValue});
-			} else {
-				projectList.tableParams = new NgTableParams ({
-					count: 10,
-				}, {dataset: newValue});
-			}
+			var tableData;
+			tableData = {
+				total: newValue.length,
+				getData: function ($defer, params) {
+					var direction;
+					// Natural sort order
+					function textSort(d1, d2, direction) {
+						var v = collator.compare(d1, d2);
+						return v * direction;
+					}
+					// this field is nested otherwise it'd be in the flds array below.
+					if (params.sorting()['currentPhase.name']) {
+						direction = params.sorting()['currentPhase.name'] === 'asc' ? 1 : -1;
+						newValue.sort(function (d1, d2) {
+							return textSort(d1.currentPhase.name, d2.currentPhase.name, direction);
+						});
+					} else {
+						var flds = ['name', 'memPermitID', 'type', 'region'];
+						flds.forEach(function (fld) {
+							direction = params.sorting()[fld] === 'asc' ? 1 : -1;
+							newValue.sort(function (d1, d2) {
+								return textSort(d1[fld], d2[fld], direction);
+							});
+						});
+					}
+					$defer.resolve(newValue.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+				}
+		};
+		var paramDef = { count: 50 };
+		if ($scope.$parent.filterObj) {
+			paramDef.filter = $scope.$parent.filterObj;
+		}
+		projectList.tableParams = new NgTableParams (paramDef, tableData);
 		}
 	});
 
