@@ -272,7 +272,8 @@ angular
 			'Resolved',
 			'Recinded'
 		]
-	)	.constant('PROJECT_DECISION',
+	)	
+	.constant('PROJECT_DECISION',
 		{
 			'pre-ea-act-approval' : 'Pre-EA Act Approval',
 			'in-progress' : 'In Progress',
@@ -283,6 +284,17 @@ angular
 			'terminated' : 'Terminated',
 			'withdrawn' : 'Withdrawn'
 		}
+	)
+	.constant('PROJECT_ACTIVITY_STATUS',
+		[
+			' ',
+			'Active',
+			'Complete',
+			'Inactive',
+			'Pending',
+			'Suspended',
+			'N/A'
+		]
 	)
 	.constant('RELEASE',
 		{
