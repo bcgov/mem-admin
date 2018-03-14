@@ -1,4 +1,4 @@
-import geb.spock.GebReportingSpec
+package specs.app
 
 import pages.app.AddEditProjectPage
 import pages.app.HomePage
@@ -12,11 +12,8 @@ import spock.lang.Stepwise
 
 @Title("Functional tests for the EditRoles modal page")
 @Stepwise
-class EditRolesSpec extends GebReportingSpec {
+class EditRolesSpec extends LoggedInSpec {
   def setupSpec() {
-    to LoginPage
-    login("admin", System.getenv("ADMINPW"))
-    to HomePage
   }
 
   @Unroll

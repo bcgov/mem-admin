@@ -1,4 +1,4 @@
-import geb.spock.GebReportingSpec
+package specs.app
 
 import pages.app.ContactsPage
 import pages.app.HomePage
@@ -11,11 +11,8 @@ import spock.lang.Stepwise
 
 @Title("Functional tests for the Contacts page")
 @Stepwise
-class ContactsSpec extends GebReportingSpec {
+class ContactsSpec extends LoggedInSpec {
   def setupSpec() {
-    to LoginPage
-    login("admin", System.getenv("ADMINPW"))
-    to HomePage
   }
 
   @Unroll

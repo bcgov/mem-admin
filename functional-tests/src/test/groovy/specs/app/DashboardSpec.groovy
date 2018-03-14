@@ -1,4 +1,4 @@
-import geb.spock.GebReportingSpec
+package specs.app
 
 import pages.app.DashboardPage
 import pages.app.HomePage
@@ -11,11 +11,8 @@ import spock.lang.Stepwise
 
 @Title("Functional tests for the Dashboard page")
 @Stepwise
-class DashboardSpec extends GebReportingSpec {
+class DashboardSpec extends LoggedInSpec {
   def setupSpec() {
-    to LoginPage
-    login("admin", System.getenv("ADMINPW"))
-    to HomePage
   }
 
   @Unroll
