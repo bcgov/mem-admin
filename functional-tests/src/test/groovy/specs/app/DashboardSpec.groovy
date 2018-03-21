@@ -12,8 +12,6 @@ import spock.lang.Stepwise
 @Title("Functional tests for the Dashboard page")
 @Stepwise
 class DashboardSpec extends LoggedInSpec {
-  def setupSpec() {
-  }
 
   @Unroll
   def "Navigate Page from: DashboardPage, click Link: #ClickLink, Assert Page: #AssertPage"() {

@@ -12,9 +12,7 @@ import spock.lang.Stepwise
 @Title("Functional tests for the Contacts page")
 @Stepwise
 class ContactsSpec extends LoggedInSpec {
-  def setupSpec() {
-  }
-
+  
   @Unroll
   def "Navigate Page from: ContactsPage, click Link: #ClickLink, Assert Page: #AssertPage"() {
     given: "I start on the ContactsPage"

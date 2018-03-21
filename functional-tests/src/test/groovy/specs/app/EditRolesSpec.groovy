@@ -13,8 +13,6 @@ import spock.lang.Stepwise
 @Title("Functional tests for the EditRoles modal page")
 @Stepwise
 class EditRolesSpec extends LoggedInSpec {
-  def setupSpec() {
-  }
 
   @Unroll
   def "Start on Page AddEditProjectPage, open modal: EditRolesModal, click Link: #ClickLink, Assert Page: #AssertPage"() {

@@ -22,9 +22,6 @@ import spock.lang.Stepwise
 @Stepwise
 class HomeSpec extends LoggedInSpec {
 
-  def setupSpec() {
-  }
-
   @Unroll
   def "Navigate Page from: HomePage, click Link: #ClickLink, Assert Page: #AssertPage"() {
     given: "I start on the HomePage"

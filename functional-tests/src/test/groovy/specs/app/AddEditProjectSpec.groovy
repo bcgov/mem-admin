@@ -14,9 +14,6 @@ import spock.lang.Stepwise
 @Title("Functional tests for the AddEditProject page")
 @Stepwise
 class AddEditProjectSpec extends LoggedInSpec {
-  def setupSpec() {
-  }
-
   @Unroll
   def "Navigate Page from: AddEditProjectPage, click Link: #ClickLink, Assert Page: #AssertPage"() {
     given: "I start on the AddEditProjectPage"
