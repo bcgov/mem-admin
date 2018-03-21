@@ -38,7 +38,7 @@ function controllerSystemMenu($scope, $state, Authentication, Menus, $rootScope,
 
   $scope.$watch('project', function(newValue) {
     if (newValue) {
-      //console.log ('controllerSystemMenu.project = >' + newValue.code + '<');
+      //console.log ('controllerSystemMenu.project = >' + newValue.code + '<');// eslint-disable-line
       menu.project = newValue;
       menu.isProjectAdmin = (Authentication.user && Authentication.user.roles && Authentication.user.roles.indexOf (menu.project.adminRole) !== -1);
       menu.isProponentAdmin = (Authentication.user && Authentication.user.roles && Authentication.user.roles.indexOf (menu.project.proponentAdminRole) !== -1);

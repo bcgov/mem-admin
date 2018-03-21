@@ -31,7 +31,11 @@ angular.module('core').service('Menus', ['Application',
     //
     // -------------------------------------------------------------------------
     var checkPermission = function (opts) {
+      //console.log("checkPermission"); // eslint-disable-line
       var p = opts.permission.split ('.'); // get the permission prefix and name
+      //console.log('p', p); // eslint-disable-line
+      //console.log('opts', opts); // eslint-disable-line
+      //console.log('opts[p[0]][p[1]]', opts[p[0]][p[1]]); // eslint-disable-line
       return opts[p[0]][p[1]]; // check the prefix object for name
     };
     // -------------------------------------------------------------------------
@@ -47,9 +51,14 @@ angular.module('core').service('Menus', ['Application',
       var contextPermissions = (context && context.userCan) ? context.userCan : {};
       // allows a logged in user not on the project to get some menu items.
       //contextPermissions['public'] = true;
-      //console.log ('applicationPermissions:',applicationPermissions);
-      //console.log ('contextPermissions:',contextPermissions);
-      //console.log ('this.permissions:',this.permissions);
+      //console.log ('Application: ', applicationPermissions);// eslint-disable-line
+      //console.log ('context: ', context);// eslint-disable-line
+      //console.log ('contextPermissions: ', contextPermissions);// eslint-disable-line
+      //console.log ('applicationPermissions:', applicationPermissions);// eslint-disable-line
+      //console.log ('contextPermissions:', contextPermissions);// eslint-disable-line
+      //console.log ('this.permissions:', this.permissions);// eslint-disable-line
+      //console.log ('this', this);// eslint-disable-line
+      //console.log ('user', user);// eslint-disable-line
       var result = this.permissions.map (function (p) {
         return checkPermission ({
           permission  : p,
@@ -59,7 +68,9 @@ angular.module('core').service('Menus', ['Application',
       }).reduce (function (prev, current) {
         return (prev || current);
       });
-      // console.log ('checking for :', this.title, result);
+
+      //console.log ('checking for :', this.title, result);// eslint-disable-line
+
       return result;
     };
     // -------------------------------------------------------------------------
