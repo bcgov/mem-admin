@@ -1,0 +1,13 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.10.2
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:minimatch:20160620':
+    - grunt-protractor-runner > protractor > jasminewd2 > jasmine > glob > minimatch:
+        patched: '2018-03-22T20:31:45.931Z'
+    - grunt-protractor-runner > protractor > jasmine > glob > minimatch:
+        patched: '2018-03-22T20:31:45.931Z'
+  'npm:uglify-js:20151024':
+    - swig > uglify-js:
+        patched: '2018-03-22T20:31:45.931Z'
