@@ -53,17 +53,15 @@ var getGlobbedPaths = function (globPatterns, excludes) {
  */
 var validateEnvironmentVariable = function () {
   var environmentFiles = glob.sync('./config/env/' + process.env.NODE_ENV + '.js');
-  console.log();
+
   if (!environmentFiles.length) {
     if (process.env.NODE_ENV) {
-      console.error(chalk.red('+ Error: No configuration file found for "' + process.env.NODE_ENV + '" environment using development instead'));
+      console.error(chalk.red('+ Error: No configuration file found for "' + process.env.NODE_ENV + '" environment using development instead'));//eslint-disable-line
     } else {
-      console.error(chalk.red('+ Error: NODE_ENV is not defined! Using default development environment'));
+      console.error(chalk.red('+ Error: NODE_ENV is not defined! Using default development environment'));//eslint-disable-line
     }
     process.env.NODE_ENV = 'development';
   }
-  // Reset console color
-  console.log(chalk.white(''));
 };
 
 /**

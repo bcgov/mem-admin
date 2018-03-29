@@ -25,6 +25,25 @@ mem-admin has been built using MongoDB, Express, AngularJS and NodeJS.  See http
 * git
 * yarn >= 1.3.2
 
+## Functional Tests
+
+To run the functional tests use "grunt runfunctional"
+This will go through these steps:
+* Setup a functional test instance of the database
+* Spin up a functional test instance of the application
+* Spin up automated testing of the functional test instance of the application
+
+Note that you need the following env vars:
+* FUNCTIONAL_PORT=3001 -- used to server the functional test instance of the application
+* FUNCTIONAL_HOST=localhost -- location of the functional test instance of the application
+* BASEURL=http://localhost:3001 -- the url targeted by the functional tests
+* MONGODB_FUNC_HOST=localhost -- the host for the mongo instance targeted by the functional test instance of the application
+* MONGODB_FUNC_PORT=27017 -- port for the mongo instance targeted by the functional test instance of the application
+* MONGODB_FUNC_DATABASE=mem-dev-func -- name of the database used by the functional test instance of the application
+
+
+Note that you need to have an instance of the Mongo DBMS running for this to work.
+This was initially set up on Ubuntu where the Mongo DBMS was running as a service
 ## Installation
  yarn install
 
