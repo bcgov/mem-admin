@@ -229,12 +229,12 @@ angular.module('documents')
               $scope.project = scope.project;
               $scope.authentication = Authentication;
 
-              self.title = "Link Documents to '" + $scope.project.name + "'";
+              self.title = "Add Documents to '" + $scope.project.name + "'";
               if (!_.isEmpty(scope.collection.displayName)) {
-                self.title = "Link Documents to '" + scope.collection.displayName + "'";
+                self.title = "Add Documents to '" + scope.collection.displayName + "'";
               }
 
-              self.linkedFiles = angular.copy(scope.target || []);
+              self.linkedFiles = [];
               self.publishedOnly = scope.publishedOnly;
               self.docType = scope.docType;
               self.sourceDocs = {
