@@ -1121,4 +1121,8 @@ module.exports = DBModel.extend ({
         });
     });
   },
+  one: function (query, options) {
+    var self = this;
+    return self.model.findOne(query, options);
+  }
 });
