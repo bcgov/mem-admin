@@ -67,7 +67,7 @@ module.exports = function (app) {
                   if (prjString) {
                     prjString = prjString.replace(/,*$/, "");
                   }
-                  var pjs = req.query.project || prjString;
+                  var pjs = prjString ||req.query.project;
 
                   return docController.searchMany(req.query.search,
                     req.query.datestart,
