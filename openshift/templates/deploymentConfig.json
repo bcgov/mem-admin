@@ -69,7 +69,7 @@
                 "env": [
                   {
                     "name": "MINIO_HOST",
-                    "value": "${MINIO_DEPLOYMENT_NAME}"
+                    "value": "${MINIO_DEPLOYMENT_NAME}-${PROJECT_NAMESPACE}.pathfider.gov.bc.ca"
                   },
                   {
                     "name": "MINIO_ACCESS_KEY",
@@ -625,6 +625,13 @@
       "displayName": "Namespace containing application images.",
       "description": "Namespace containing application images.",
       "value": "mem-mmt-tools",
+      "required": true
+    },
+    {
+      "name": "PROJECT_NAMESPACE",
+      "displayName": "The project namespace where the deployment is going to be provisioned.",
+      "description": "The project namespace where the deployment is going to be provisioned.",
+      "value": "mem-mmt-dev",
       "required": true
     },
     {

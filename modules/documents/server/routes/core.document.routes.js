@@ -10,6 +10,7 @@ var DocumentClass	= require ('../controllers/core.document.controller');
 var routes 			= require ('../../../core/server/controllers/core.routes.controller');
 var policy 			= require ('../../../core/server/controllers/core.policy.controller');
 var fs 				= require('fs');
+var MinioController = require('../../../core/server/controllers/core.minio.controller');
 
 var renderNotFound = function (url, res) {
   res.status(404).format({
@@ -229,75 +230,83 @@ module.exports = function (app) {
         }
       });
     }));
-  //
-  // upload document
-  //
-  app.route ('/api/document/:project/upload').all (policy ('guest'))
+
+  /**
+   * Adds a new document record for the given file.
+   * Expects `request.body.file` to be a file object with all associated file metadata.
+   * Expects `request.body` to contain all other related document information.
+   * Note: This function does not itself perform any file upload, and assumes the file has already been uploaded to minio.
+   * Note: If this fails to create the document record it will then attempt to delete the file from minio, so the two locations remain in sync.
+   */
+  app.route ('/api/document/:project/upload')
+    .all (policy ('guest'))
     .post (routes.setAndRun (DocumentClass, function (model, req) {
       return new Promise (function (resolve, reject) {
-        var file = req.files.file;
-        if (file && file.originalname === 'this-is-a-file-that-we-want-to-fail.xxx') {
-          reject('Fail uploading this file.');
-        } else if (file) {
-          var opts = { oldPath: file.path, projectCode: req.Project.code};
-          routes.moveFile (opts)
-            .then (function (newFilePath) {
-              var readPermissions = null;
-              if (req.headers.internaldocument) {
-                // Force read array to be this:
-                readPermissions = ['assessment-admin', 'assessment-lead', 'assessment-team', 'assistant-dm', 'assistant-dmo', 'associate-dm', 'associate-dmo', 'complaince-officer', 'complaince-lead', 'project-eao-staff', 'project-epd', 'project-intake', 'project-qa-officer', 'project-system-admin'];
-              }
-              var datePosted, dateReceived = Date.now();
-              // Allow override of date posting/received
-              if (req.headers.dateposted) {
-                datePosted = new Date(req.headers.dateposted);
-              }
-              if (req.headers.datereceived) {
-                dateReceived = new Date(req.headers.datereceived);
-              }
-              return model.create ({
-                // Metadata related to this specific document that has been uploaded.
-                // See the document.model.js for descriptions of the parameters to supply.
-                project                 : req.Project,
-                projectFolderType       : req.body.documenttype,
-                projectFolderSubType    : req.body.documentsubtype,
-                projectFolderName       : req.body.documentfoldername,
-                projectFolderURL        : newFilePath,
-                datePosted 				: datePosted,
-                dateReceived 			: dateReceived,
+        var file = req.body.file;
+        if (file) {
+          var readPermissions = null;
+          if (req.headers.internaldocument) {
+            // Force read array to be this:
+            readPermissions = ['assessment-admin', 'assessment-lead', 'assessment-team', 'assistant-dm', 'assistant-dmo', 'associate-dm', 'associate-dmo', 'complaince-officer', 'complaince-lead', 'project-eao-staff', 'project-epd', 'project-intake', 'project-qa-officer', 'project-system-admin'];
+          }
+          var datePosted, dateReceived = Date.now();
+          // Allow override of date posting/received
+          if (req.headers.dateposted) {
+            datePosted = new Date(req.headers.dateposted);
+          }
+          if (req.headers.datereceived) {
+            dateReceived = new Date(req.headers.datereceived);
+          }
 
-                // Migrated from old EPIC
-                oldData            		: req.body.olddata,
+          var modelData = {
+            // Metadata related to this specific document that has been uploaded.
+            // See the document.model.js for descriptions of the parameters to supply.
+            project                 : req.Project,
+            projectFolderType       : req.body.documenttype,
+            projectFolderSubType    : req.body.documentsubtype,
+            projectFolderName       : req.body.documentfoldername,
+            projectFolderURL        : req.body.filePath,
+            datePosted 			       	: datePosted,
+            dateReceived 		       	: dateReceived,
+            // Migrated from old EPIC
+            oldData            		  : req.body.olddata,
+            // NB                   : In EPIC, projectFolders have authors, not the actual documents.
+            projectFolderAuthor     : req.body.projectfolderauthor,
+            // These are the data as it was shown on the EPIC website.
+            documentEPICProjectId 	: req.body.documentepicprojectid,
+            documentAuthor          : req.body.documentauthor,
+            documentFileName        : req.body.documentfilename,
+            documentFileURL         : req.body.documentfileurl,
+            documentFileSize        : req.body.documentfilesize,
+            documentFileFormat      : req.body.documentfileformat,
+            documentIsInReview      : req.body.documentisinreview,
+            documentVersion         : 0,
+            // These are automatic as it actually is when it comes into our system
+            internalURL             : req.body.filePath,
+            internalOriginalName    : file.originalname,
+            internalName            : file.name,
+            internalMime            : file.mimetype,
+            internalExt             : file.extension,
+            internalSize            : file.size,
+            internalEncoding        : file.encoding,
+            directoryID             : req.body.directoryid || 0,
+            displayName             : req.body.displayname || req.body.documentfilename || file.originalname,
+            dateUploaded            : req.body.dateuploaded
+          }
 
-                // NB                   : In EPIC, projectFolders have authors, not the actual documents.
-                projectFolderAuthor     : req.body.projectfolderauthor,
-                // These are the data as it was shown on the EPIC website.
-                documentEPICProjectId 	: req.body.documentepicprojectid,
-                documentAuthor          : req.body.documentauthor,
-                documentFileName        : req.body.documentfilename,
-                documentFileURL         : req.body.documentfileurl,
-                documentFileSize        : req.body.documentfilesize,
-                documentFileFormat      : req.body.documentfileformat,
-                documentIsInReview      : req.body.documentisinreview,
-                documentVersion         : 0,
-                // These are automatic as it actually is when it comes into our system
-                internalURL             : newFilePath,
-                internalOriginalName    : file.originalname,
-                internalName            : file.name,
-                internalMime            : file.mimetype,
-                internalExt             : file.extension,
-                internalSize            : file.size,
-                internalEncoding        : file.encoding,
-                directoryID             : req.body.directoryid || 0,
-                displayName             : req.body.displayname || req.body.documentfilename || file.originalname,
-                dateUploaded            : req.body.dateuploaded
-              }, req.headers.inheritmodelpermissionid, readPermissions);
+          return model.create(modelData, req.headers.inheritmodelpermissionid, readPermissions)
+            .then(function (response) {
+              return response;
+            }, function (error) {
+              // the model failed to be created - delete the document from minio so the database and minio remain in sync.
+              MinioController.deleteDocument(req.Project.code, file.name);
+              reject(error);
             })
-            .then(function (d) {
+            .then(function (data) {
               if (req.headers.publishafterupload === 'true') {
-                return model.publish(d);
+                return model.publish(data);
               } else {
-                return d;
+                return data;
               }
             })
             .then (resolve, reject);
