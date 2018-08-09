@@ -18,7 +18,7 @@ The features provided by the web-based ESM application include:
 ## Developer Requirements
 
 mem-admin has been built using MongoDB, Express, AngularJS and NodeJS.  See http://mean.js/ for more information on the project's development stack. Basic globally install requirements for Win32, OSX, or Linux are as follows:
-* node@ >= 6.11.3 
+* node@ >= 6.11.3
 * npm@ >= 2.15.1 (only for installing yarn)
 * mongodb-server@ >= 2.6.x
 * grunt@ >= 0.4.5
@@ -26,15 +26,20 @@ mem-admin has been built using MongoDB, Express, AngularJS and NodeJS.  See http
 * yarn >= 1.3.2
 
 The following environment variables must be set in order for a Minio object storage instance to be used for document uploads:
-* _MINIO_DEPLOYMENT_NAME_: the URL pointing to a Minio instance (can be https://play.minio.io:9000)
-* _MINIO_ACCESS_KEY_: the minio access key to be used for authentication
-* _MINIO_SECRET_KEY_: the minio secret key to be used for authentication
+* `MINIO_DEPLOYMENT_NAME` - the URL pointing to a Minio instance (can be https://play.minio.io:9000)
+* `MINIO_ACCESS_KEY` - the minio access key to be used for authentication
+* `MINIO_SECRET_KEY` - the minio secret key to be used for authentication
 
 ## Installation
  `yarn install`
 
-## Start in development mode
+## Development Mode
  `npm start`
+
+## Production Mode
+`grunt build && NODE_ENV=production node server.js`
+
+After this you may open up a browser of your choice and navigte to http://localhost:4000/
 
 ## Unit Tests
 

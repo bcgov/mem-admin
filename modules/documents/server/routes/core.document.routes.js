@@ -7,11 +7,11 @@
 //
 // =========================================================================
 var DocumentClass	= require ('../controllers/core.document.controller');
-var routes 			= require ('../../../core/server/controllers/core.routes.controller');
-var policy 			= require ('../../../core/server/controllers/core.policy.controller');
-var fs 				= require('fs');
+var routes = require ('../../../core/server/controllers/core.routes.controller');
+var policy = require ('../../../core/server/controllers/core.policy.controller');
 var MinioController = require('../../../core/server/controllers/core.minio.controller');
 var Multer = require('multer');
+var fs = require('fs');
 
 var renderNotFound = function (url, res) {
   res.status(404).format({
@@ -134,28 +134,6 @@ module.exports = function (app) {
     .put (routes.setAndRun (DocumentClass, function (model, req) {
       return model.getList (req.body);
     }));
-  //
-  // fetch a document (download multipart stream)
-  //
-  app.route ('/api/document/:document/download')
-    .all (policy ('guest'))
-    .get (function (req, res) {
-      if (req.Document.internalURL.match (/^(http|ftp)/)) {
-        res.redirect (req.Document.internalURL);
-      } else {
-        var name = documentDownloadName(req);
-
-        if (fs.existsSync(req.Document.internalURL)) {
-          routes.streamFile (res, {
-            file : req.Document.internalURL,
-            name : name,
-            mime : req.Document.internalMime
-          });
-        } else {
-          renderNotFound(req.originalUrl, res);
-        }
-      }
-    });
 
   /**
    * Download a file from Minio, or from an alternate http/ftp source, if specified in the file properties.
@@ -227,6 +205,10 @@ module.exports = function (app) {
                     reject(error);
                   });
               })
+            })
+            .catch(function(error) {
+              // general catch all
+              return Promise.reject(error);
             });
         }
         else {
@@ -311,6 +293,10 @@ module.exports = function (app) {
                     reject(error);
                   });
               })
+            })
+            .catch(function(error) {
+              // general catch all
+              return Promise.reject(error);
             });
         }
         else {
