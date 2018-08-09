@@ -11,44 +11,7 @@ var routes = require ('../../../core/server/controllers/core.routes.controller')
 var policy = require ('../../../core/server/controllers/core.policy.controller');
 var MinioController = require('../../../core/server/controllers/core.minio.controller');
 var Multer = require('multer');
-var fs = require('fs');
 
-var renderNotFound = function (url, res) {
-  res.status(404).format({
-    'text/html': function () {
-      res.render('modules/core/server/views/404', {
-        url: url
-      });
-    },
-    'application/json': function () {
-      res.json({
-        error: 'Path not found'
-      });
-    },
-    'default': function () {
-      res.send('Path not found');
-    }
-  });
-};
-var documentDownloadName = function documentDownloadName(req) {
-  // ETL fixing - if the name was brought in without a filename, and we have their document
-  // file format, affix the type as an extension to the original name so they have a better
-  // chance and opening up the file on double-click.
-  String.prototype.endsWith = String.prototype.endsWith || function (str){
-    return new RegExp(str + "$").test(str);
-  };
-
-  var doc = req.Document;
-  var format = req.Document.documentFileFormat;
-  var name = doc.documentFileName || doc.displayName || doc.internalOriginalName;
-  if (format && !name.endsWith(format)) {
-    name += "." + format;
-  }
-  // keep the console log statments until after we run an ETL that resets the filename extensions.
-  // these will help verify the ETL once it is done
-  // They may help in the future if those file extensions disappear again.
-  return name;
-};
 module.exports = function (app) {
   //
   // get put new delete
