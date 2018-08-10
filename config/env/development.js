@@ -70,5 +70,5 @@ module.exports = {
       port: 1025
     }
   },
-  seedDB: process.env.MONGO_SEED || false
+  seedDB: process.env.MONGO_SEED || true
 };
