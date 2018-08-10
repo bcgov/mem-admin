@@ -172,12 +172,6 @@ module.exports = function(grunt) {
       'test-client': ['build/coverage/client'],
       'test-server': ['build/coverage/server'],
       'dist':['public/dist']
-    },
-    run: {
-      dev: {
-        cmd: 'node',
-        args: ['server.js']
-      }
     }
   });
 
@@ -305,19 +299,16 @@ module.exports = function(grunt) {
   // Lint CSS and JavaScript files.
   grunt.registerTask('lint', ['sass', 'less', 'eslint', 'csslint']);
 
-  // Package application files for dev and start the node server
-  grunt.registerTask('start', [
+  // Package application files
+  grunt.registerTask('build', [
     'clean:dist',
     'env:dev',
     'lint',
     'ngAnnotate',
     'uglify',
-    'cssmin',
-    'run:dev'
+    'cssmin'
   ]);
-
-  // Package application files for prod
-  grunt.registerTask('build', [
+  grunt.registerTask('buildprod', [
     'clean:dist',
     'env:prod',
     'lint',
@@ -325,8 +316,6 @@ module.exports = function(grunt) {
     'uglify',
     'cssmin'
   ]);
-
-  // Package application files for test
   grunt.registerTask('buildtest', [
     'clean:dist',
     'env:test',
