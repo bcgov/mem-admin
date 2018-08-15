@@ -76,7 +76,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${MINIO_DEPLOYMENT_NAME}",
-                        "key": "accessKey"
+                        "key": "MINIO_ACCESS_KEY"
                       }
                     }
                   },
@@ -85,7 +85,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${MINIO_DEPLOYMENT_NAME}",
-                        "key": "secretKey"
+                        "key": "MINIO_SECRET_KEY"
                       }
                     }
                   },
@@ -186,7 +186,7 @@
                   "name": "MINIO_ACCESS_KEY",
                   "valueFrom": {
                     "secretKeyRef": {
-                      "key": "accessKey",
+                      "key": "MINIO_ACCESS_KEY",
                       "name": "${MINIO_DEPLOYMENT_NAME}"
                     }
                   }
@@ -195,7 +195,7 @@
                   "name": "MINIO_SECRET_KEY",
                   "valueFrom": {
                     "secretKeyRef": {
-                      "key": "secretKey",
+                      "key": "MINIO_SECRET_KEY",
                       "name": "${MINIO_DEPLOYMENT_NAME}"
                     }
                   }
@@ -486,8 +486,8 @@
         }
       },
       "stringData": {
-        "accessKey": "${MINIO_ACCESS_KEY}",
-        "secretKey": "${MINIO_SECRET_KEY}"
+        "MINIO_ACCESS_KEY": "${MINIO_ACCESS_KEY}",
+        "MINIO_SECRET_KEY": "${MINIO_SECRET_KEY}"
       }
     },
     {
