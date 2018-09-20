@@ -2,15 +2,15 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "esm-server",
+    "name": "mem-admin",
     "annotations": {
-      "description": "Deployment template for adding a Minio object storage server to an existing esm-server deployment.",
+      "description": "Deployment template for adding a Minio object storage server to an existing mem-admin deployment.",
       "tags": "minio",
       "iconClass": "icon-other-unknown"
     }
   },
   "labels": {
-    "app": "esm-server"
+    "app": "mem-admin"
   },
   "objects": [
     {
