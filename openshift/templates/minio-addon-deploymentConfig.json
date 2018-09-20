@@ -133,7 +133,7 @@
       },
       "spec": {
         "port": {
-          "targetPort": "8080-tcp"
+          "targetPort": "9000-tcp"
         },
         "to": {
           "kind": "Service",
