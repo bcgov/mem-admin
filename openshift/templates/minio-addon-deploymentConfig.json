@@ -207,7 +207,7 @@
       "name": "MINIO_DEPLOYMENT_NAME",
       "displayName": "Minio deployment name",
       "description": "The name given to the minio instance deployment.",
-      "value": "minio-esm",
+      "value": "minio-mem",
       "required": true
     },
     {
@@ -228,7 +228,7 @@
       "name": "MINIO_VOLUME_NAME",
       "displayName": "Name of the minio storage PV",
       "required": true,
-      "value": "minio-esm-data"
+      "value": "minio-mem-data"
     },
     {
       "name": "MINIO_VOLUME_CAPACITY",
