@@ -91,6 +91,10 @@ If running linux you should have grunt cli installed so that you take advantage 
 
 ## Getting Help or Reporting an Issue
 
+# Visual Studio Code
+
+To use our Visual Studio Code extensions copy the contents of vscodeextensions.txt in the root directory and paste it into bash. If it doesnt work, make sure you have the Code CLI installed `code --version` and if it's not installed open the command palette (shift + command + p) and run `Shell Command: install 'code' command in PATH`.
+
 ## How to Contribute
 Feel free to create pull requests from the default "master" branch, click here to create one automatically: https://github.com/bcgov/mem-admin/pull/new/master.
 
