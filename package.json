@@ -41,7 +41,7 @@
     "forever": "0.15.3",
     "glob": "5.0.15",
     "helmet": "3.12.1",
-    "lodash": "4.17.10",
+    "lodash": "4.17.11",
     "method-override": "2.3.10",
     "minimatch": "3.0.4",
     "minio": "^6.0.0",
