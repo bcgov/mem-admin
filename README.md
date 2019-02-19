@@ -18,7 +18,7 @@ The features provided by the web-based ESM application include:
 ## Developer Requirements
 
 mem-admin has been built using MongoDB, Express, AngularJS and NodeJS.  See http://mean.js/ for more information on the project's development stack. Basic globally install requirements for Win32, OSX, or Linux are as follows:
-* node@ >= 6.11.3
+* node@ = 6.11.3
 * npm@ >= 2.15.1 (only for installing yarn)
 * mongodb-server@ >= 2.6.x
 * grunt@ >= 0.4.5
