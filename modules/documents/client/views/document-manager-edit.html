@@ -21,7 +21,10 @@
       <label for="displayName" class="control-label">Display Name
         <em class="required">(Required)</em>
       </label>
-      <input class="form-control" id="displayName" name="displayName" type="text" ng-model="doc.displayName" required ng-blur="validate()">
+      <p class="text-info">The text entered here will be the name displayed to the public as well as the name of the file when downloaded</p>
+      <span class="text-danger " id="displayNameExtError" ng-show="editFileForm.displayName.$invalid"></span>
+      <input class="form-control" id="displayName" name="displayName" type="text" ng-model="doc.displayName" required ng-blur="validate()" fn-filename
+      ng-trim=false fn-extension="{{extension}}" fn-error="displayNameExtError">
       <div class="help-block">
         {{editFileProperties.validationMessage}}
       </div>
@@ -29,8 +32,9 @@
 
     <div ng-if="doc._schemaName === 'Document'" class="form-group file-type" x-show-errors>
       <label for="documentFileName" class="control-label">File Name
-        <span class="text-danger " id="fileNameExtError" ng-show="editFileForm.documentFileName.$invalid"></span>
       </label>
+      <br>
+      <span class="text-danger " id="fileNameExtError" ng-show="editFileForm.documentFileName.$invalid"></span>
       <input class="form-control" id="documentFileName" name="documentFileName" type="text" ng-model="doc.documentFileName" fn-filename
         ng-trim=false fn-extension="{{extension}}" fn-error="fileNameExtError">
     </div>
