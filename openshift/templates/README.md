@@ -86,6 +86,6 @@ drop your database
 
 restore your databse
 
-```mongorestore -d esm dump/esm```
+```mongorestore -d esm dump/esm/ -u admin -p $MONGODB_ADMIN_PASSWORD --authenticationDatabase=admin```
 
 check that everything is working properly
