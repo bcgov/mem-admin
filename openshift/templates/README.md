@@ -19,7 +19,7 @@ OpenShift config map named ```mongo-config``` with keys:
 ```
 MONGO_BACKUP_COUNT
 ```
-that is the number of backups you want to keep in your PVC (Note that the lower limit is 2 so that there is always one good copy)
+that is the number of backups you want to keep in your PVC
 ```
 MONGO_BACKUP_SIZE_LOWER_LIMIT
 ```

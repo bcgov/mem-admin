@@ -149,6 +149,7 @@ objects:
 
                       checkDumps () {
                         DUMP_DIRS=$(ls /var/lib/mongodb-backup);
+
                         for DUMP_DIR in $DUMP_DIRS; do
                           for ADMIN_FILE in "${adminDirFiles[@]}"; do
                             if [ ! -f /var/lib/mongodb-backup/$DUMP_DIR/admin/$ADMIN_FILE ]; then
@@ -174,10 +175,6 @@ objects:
                       checkDumps;
 
                       if [ "$ALL_BACKUPS_HEALTHY" = true ]; then
-                        if [ "$MONGODB_BACKUP_KEEP" -lt 2 ]; then
-                          MONGODB_BACKUP_KEEP=2;
-                        fi;
-
                         DIR=/var/lib/mongodb-backup/dump-`date +%F-%T`-HEALTHY;
                         mongodump --numParallelCollections=1 --username=admin --password=$MONGODB_ADMIN_PASSWORD --host=$MONGODB_SERVICE_HOST --port=$MONGODB_SERVICE_PORT --authenticationDatabase=admin --gzip --out=$DIR;
 
