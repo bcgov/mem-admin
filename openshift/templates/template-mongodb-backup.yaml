@@ -8,7 +8,7 @@ metadata:
 parameters:
   - name: MONGODB_BACKUP_SCHEDULE
     description: 'Cron-like schedule expression. Default: Once every day at 1:00 AM'
-    value: '0 1 * * *'
+    value: '30 6 * * *'
   - name: MONGODB_BACKUP_VOLUME_CLAIM
     description: 'Name of the volume claim to be used as storage'
     value: ''
@@ -142,6 +142,11 @@ objects:
                         curl -X POST -H "Content-Type: application/json" --data "{\"username\":\"BakBot\",\"icon_emoji\":\":robot:\",\"text\":\"@all Backup for MEM Mongo database has FAILED. Backups are currently paused until the issue is fixed. $MESSAGE Please see documentation https://github.com/bcgov/mem-admin/tree/dev/openshift/templates\"}" https://chat.pathfinder.gov.bc.ca/hooks/BTqW65kZWWrs3TnDt/Yz9QocenFmpuWyqr3Xapgo9c3X4wm8RBfdnizej7gqeBqfN3;
                       };
 
+                      alertWarning () {
+                        MESSAGE="$1";
+                        curl -X POST -H "Content-Type: application/json" --data "{\"username\":\"BakBot\",\"icon_emoji\":\":robot:\",\"text\":\"@all WARNING - $MESSAGE Please see documentation https://github.com/bcgov/mem-admin/tree/dev/openshift/templates\"}" https://chat.pathfinder.gov.bc.ca/hooks/BTqW65kZWWrs3TnDt/Yz9QocenFmpuWyqr3Xapgo9c3X4wm8RBfdnizej7gqeBqfN3;
+                      };
+
                       checkDumps () {
                         DUMP_DIRS=$(ls /var/lib/mongodb-backup);
                         for DUMP_DIR in $DUMP_DIRS; do
@@ -158,7 +163,7 @@ objects:
                             fi;
                           done;
                           if [ "$(du -sb /var/lib/mongodb-backup/$DUMP_DIR | cut -f1)" -gt $MONGO_BACKUP_SIZE_UPPER_LIMIT ]; then
-                            alertBadDump "$DUMP_DIR" "Disk usage is approaching capacity. Please transfer backups to larger PVC or decrease the number of backups to keep.";
+                            alertWarning "Disk usage is approaching capacity. Please transfer backups to larger PVC or decrease the number of backups to keep.";
                           fi;
                           if [ "$(du -sb /var/lib/mongodb-backup/$DUMP_DIR | cut -f1)" -lt $MONGO_BACKUP_SIZE_LOWER_LIMIT ]; then
                             alertBadDump "$DUMP_DIR" "A previous backup did not complete successfully. Backup size was lower than normal.";
@@ -173,16 +178,16 @@ objects:
                           MONGODB_BACKUP_KEEP=2;
                         fi;
 
-                        ls -rdt /var/lib/mongodb-backup/dump-* |
-                        head -n -$MONGODB_BACKUP_KEEP |
-                        xargs rm -rf;
-
                         DIR=/var/lib/mongodb-backup/dump-`date +%F-%T`-HEALTHY;
                         mongodump --numParallelCollections=1 --username=admin --password=$MONGODB_ADMIN_PASSWORD --host=$MONGODB_SERVICE_HOST --port=$MONGODB_SERVICE_PORT --authenticationDatabase=admin --gzip --out=$DIR;
 
                         checkDumps;
 
                         if [ "$ALL_BACKUPS_HEALTHY" = true ]; then
+                          ls -rdt /var/lib/mongodb-backup/dump-* |
+                          head -n -$MONGODB_BACKUP_KEEP |
+                          xargs rm -rf;
+
                           curl -X POST -H 'Content-Type: application/json' --data '{"username":"BakBot","icon_emoji":":robot:","text":"Backup for MEM Mongo Database SUCCESS!"}' https://chat.pathfinder.gov.bc.ca/hooks/BTqW65kZWWrs3TnDt/Yz9QocenFmpuWyqr3Xapgo9c3X4wm8RBfdnizej7gqeBqfN3;
 
                           echo;

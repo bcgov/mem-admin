@@ -9,12 +9,25 @@ Note that the template assumes there is a service called ```mongodb``` that is e
 ### Through the OpenShift UI or otherwise, you should to create:
 
 OpenShift secret named ```mongo-secrets``` with key:
-```MONGO_ADMIN_PASSWORD``` that is the password for your mongo admin account on your live database
+```
+MONGO_ADMIN_PASSWORD
+
+```
+that is the password for your mongo admin account on your live database
 
 OpenShift config map named ```mongo-config``` with keys:
-```MONGO_BACKUP_COUNT``` that is the number of backups you want to keep in your PVC (Note that the lower limit is 2 so that there is always one good copy)
-```MONGO_BACKUP_SIZE_LOWER_LIMIT``` that is the lower size limit in bytes that your backups should be above to consider them successful
-```MONGO_BACKUP_SIZE_UPPER_LIMIT``` that is the upper size limit in bytes that your backups should be above to consider them successful
+```
+MONGO_BACKUP_COUNT
+```
+that is the number of backups you want to keep in your PVC (Note that the lower limit is 2 so that there is always one good copy)
+```
+MONGO_BACKUP_SIZE_LOWER_LIMIT
+```
+that is the lower size limit in bytes that your backups should be above to consider them successful
+```
+MONGO_BACKUP_SIZE_UPPER_LIMIT
+```
+that is the upper size limit in bytes that your backups should be above to consider them successful
 
 ### To create the cronjob:
 
@@ -22,15 +35,19 @@ Copy the login command from the OpenShift UI and paste it into your console
 
 Navigate to your project:
 
-```oc project <your project>```
+```
+oc project <your project>
+```
 
 cd into this directory (or wherever your template-mongodb-backup.yaml file is)
 
 Create the cronjob:
 
-```oc process -f template-mongodb-backup.yaml MONGODB_BACKUP_VOLUME_CLAIM=bk-mem-mmt-test-u2gbb1n7lui0 MONGODB_BACKUP_SCHEDULE='0 1 * * *' | oc create -f -```
+```
+oc process -f template-mongodb-backup.yaml MONGODB_BACKUP_VOLUME_CLAIM=bk-mem-mmt-test-u2gbb1n7lui0 MONGODB_BACKUP_SCHEDULE='30 6 * * *' | oc create -f -
+```
 
-where ```MONGODB_BACKUP_VOLUME_CLAIM``` is the PVC that your backups will be sored in and ```MONGODB_BACKUP_SCHEDULE``` is the cron scedule that this job will run on (0 1 * * * is every day at 1:00 AM)
+where ```MONGODB_BACKUP_VOLUME_CLAIM``` is the PVC that your backups will be sored in and ```MONGODB_BACKUP_SCHEDULE``` is the cron scedule that this job will run on (30 6 * * * is every day at 6:30 AM UCT which is 11:30 PM PCT)
 
 ## How to Restore a Mongo Database
 
@@ -48,44 +65,70 @@ First figure out which is the last healthy backup and copy that file name (e.g. 
 
 
 copy your dump locally using rsync
-```oc rsync <backup pod>:/<mount directory>/<healthy backup folder> .```
+```
+oc rsync <backup pod>:/<mount directory>/<healthy backup folder> .
+```
 e.g.
-```oc rsync pvc-migrator-2-b7tf5:/source/dump-2019-04-16-18:29:23-HEALTHY .```
+```
+oc rsync pvc-migrator-2-b7tf5:/source/dump-2019-04-16-18:29:23-HEALTHY .
+```
 
 cd into your dump directory (note you cannot rsync the dump-2019-04-16-18:29:23-HEALTHY dump folder name as it is, because it has colons in it, and rsync will recognise it as a pod)
 
-```cd /dump-2019-04-16-18:29:23-HEALTHY```
+```
+cd /dump-2019-04-16-18:29:23-HEALTHY
+```
 
 copy your dump to your pod in the tmp directory
 
-```oc rsync ./esm/ <mongo db pod>:/tmp/dump/ ```
+```
+oc rsync ./esm/ <mongo db pod>:/tmp/dump/
+```
 e.g.
-```oc rsync ./esm/ mongodb-17-fs8th:/tmp/dump/ ```
+```
+oc rsync ./esm/ mongodb-17-fs8th:/tmp/dump/
+```
 
 ### Restore your database
 
 rsh onto your mongo pod
 
-```oc rsh <mongo pod name>```
+```
+oc rsh <mongo pod name>
+```
 
 cd to where your dump is
 
-```cd /tmp```
+```
+cd /tmp
+```
 
 drop your database
 
-```mongo admin -u admin -p $MONGODB_ADMIN_PASSWORD```
+```
+mongo admin -u admin -p $MONGODB_ADMIN_PASSWORD
+```
 
-```show dbs```
+```
+show dbs
+```
 
-```use <database name>```
+```
+use <database name>
+```
 
-```db.dropDatabase()```
+```
+db.dropDatabase()
+```
 
-```exit```
+```
+exit
+```
 
 restore your databse
 
-```mongorestore -d esm dump/esm/ -u admin -p $MONGODB_ADMIN_PASSWORD --authenticationDatabase=admin```
+```
+mongorestore -d esm dump/esm/ --gzip -u admin -p $MONGODB_ADMIN_PASSWORD --authenticationDatabase=admin
+```
 
 check that everything is working properly
