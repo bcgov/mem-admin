@@ -139,12 +139,12 @@ objects:
                         UNHEALTHY_STR=${1/HEALTHY/$UNHEALTHY_STR};
                         mv $HEALTHY_STR $UNHEALTHY_STR;
                         ALL_BACKUPS_HEALTHY=false;
-                        curl -X POST -H "Content-Type: application/json" --data "{\"username\":\"BakBot\",\"icon_emoji\":\":robot:\",\"text\":\"@all Backup for MEM Mongo database has FAILED. Backups are currently paused until the issue is fixed. $MESSAGE Please see documentation https://github.com/bcgov/mem-admin/tree/dev/openshift/templates\"}" https://chat.pathfinder.gov.bc.ca/hooks/BTqW65kZWWrs3TnDt/Yz9QocenFmpuWyqr3Xapgo9c3X4wm8RBfdnizej7gqeBqfN3;
+                        curl -X POST -H "Content-Type: application/json" --data "{\"username\":\"BakBot\",\"icon_emoji\":\":robot:\",\"text\":\"@all Backup for MEM Mongo database has FAILED. Backups are currently paused until the issue is fixed. $MESSAGE Please see documentation https://github.com/bcgov/mem-admin/tree/dev/openshift/templates\"}" $ROCKETCHAT_BACKUP_DB_WEBHOOK;
                       };
 
                       alertWarning () {
                         MESSAGE="$1";
-                        curl -X POST -H "Content-Type: application/json" --data "{\"username\":\"BakBot\",\"icon_emoji\":\":robot:\",\"text\":\"@all WARNING - $MESSAGE Please see documentation https://github.com/bcgov/mem-admin/tree/dev/openshift/templates\"}" https://chat.pathfinder.gov.bc.ca/hooks/BTqW65kZWWrs3TnDt/Yz9QocenFmpuWyqr3Xapgo9c3X4wm8RBfdnizej7gqeBqfN3;
+                        curl -X POST -H "Content-Type: application/json" --data "{\"username\":\"BakBot\",\"icon_emoji\":\":robot:\",\"text\":\"@all WARNING - $MESSAGE Please see documentation https://github.com/bcgov/mem-admin/tree/dev/openshift/templates\"}" $ROCKETCHAT_BACKUP_DB_WEBHOOK;
                       };
 
                       checkDumps () {
@@ -185,7 +185,7 @@ objects:
                           head -n -$MONGODB_BACKUP_KEEP |
                           xargs rm -rf;
 
-                          curl -X POST -H 'Content-Type: application/json' --data '{"username":"BakBot","icon_emoji":":robot:","text":"Backup for MEM Mongo Database SUCCESS!"}' https://chat.pathfinder.gov.bc.ca/hooks/BTqW65kZWWrs3TnDt/Yz9QocenFmpuWyqr3Xapgo9c3X4wm8RBfdnizej7gqeBqfN3;
+                          curl -X POST -H 'Content-Type: application/json' --data '{"username":"BakBot","icon_emoji":":robot:","text":"Backup for MEM Mongo Database SUCCESS!"}' $ROCKETCHAT_BACKUP_DB_WEBHOOK;
 
                           echo;
                           echo "To restore, use:";
@@ -220,6 +220,11 @@ objects:
                         configMapKeyRef:
                           name: mongo-config
                           key: MONGO_BACKUP_SIZE_UPPER_LIMIT
+                    - name: ROCKETCHAT_BACKUP_DB_WEBHOOK
+                      valueFrom:
+                        configMapKeyRef:
+                          name: mongo-config
+                          key: ROCKETCHAT_BACKUP_DB_WEBHOOK
                   volumeMounts:
                     - name: mongodb-backup
                       mountPath: /var/lib/mongodb-backup

@@ -28,7 +28,10 @@ that is the lower size limit in bytes that your backups should be above to consi
 MONGO_BACKUP_SIZE_UPPER_LIMIT
 ```
 that is the upper size limit in bytes that your backups should be above to consider them successful
-
+```
+ROCKETCHAT_BACKUP_DB_WEBHOOK
+```
+that is the rocketchat webhook for your backup alert channel
 ### To create the cronjob:
 
 Copy the login command from the OpenShift UI and paste it into your console
