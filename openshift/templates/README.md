@@ -47,7 +47,7 @@ cd into this directory (or wherever your template-mongodb-backup.yaml file is)
 Create the cronjob:
 
 ```
-oc process -f template-mongodb-backup.yaml MONGODB_BACKUP_VOLUME_CLAIM=bk-mem-mmt-test-u2gbb1n7lui0 MONGODB_BACKUP_SCHEDULE='30 6 * * *' | oc create -f -
+oc process -f template-mongodb-backup.yaml MONGODB_BACKUP_VOLUME_CLAIM=bk-mem-mmt-prod-glglwmmwtkmg MONGODB_BACKUP_SCHEDULE='30 6 * * *' | oc create -f -
 ```
 
 where ```MONGODB_BACKUP_VOLUME_CLAIM``` is the PVC that your backups will be sored in and ```MONGODB_BACKUP_SCHEDULE``` is the cron scedule that this job will run on (30 6 * * * is every day at 6:30 AM UCT which is 11:30 PM PCT)
