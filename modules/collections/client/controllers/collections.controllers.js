@@ -143,7 +143,7 @@ collectionModules.controller('CollectionEditCtrl',
           }
           $scope.validationFlags.type = $scope.collection.type.length < 1;
           $scope.validationFlags.date = !$scope.collection.date;
-          $scope.validationFlags.authorization = (!$scope.collection.isForMEM && !$scope.collection.isForENV);
+          $scope.validationFlags.authorization = (!$scope.collection.isForMEM && !$scope.collection.isForENV && !$scope.collection.isForEAO);
           $scope.validationFlags.detailsTabInvalid = ($scope.validationFlags.name || $scope.validationFlags.type || $scope.validationFlags.date || $scope.validationFlags.authorization);
         }
       }
