@@ -28,5 +28,6 @@ module.exports = require(path.resolve('./modules/core/server/controllers/core.sc
   hasPublished   : { type: Boolean, default: false },
 
   isForENV       : { type: Boolean, default: false },
+  isForEAO       : { type: Boolean, default: false },
   isForMEM       : { type: Boolean, default: true },
 });

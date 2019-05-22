@@ -16,6 +16,7 @@
                 <td data-title="'Date'" title: 'Date' filter="{'date':'text'}" sortable="'date'">{{ c.date | amDateFormat:'YYYY-MM-DD' }}</td>
                 <td data-title="'MEM'" title: 'MEM' filter="{'isForMEM':'text'}" sortable="'isForMEM'">{{ c.isForMEM ? 'Y' : 'N' }}</td>
                 <td data-title="'ENV'" title: 'ENV' filter="{'isForENV':'text'}" sortable="'isForENV'">{{ c.isForENV ? 'Y' : 'N' }}</td>
+                <td data-title="'EAO'" title: 'EAO' filter="{'isForEAO':'text'}" sortable="'isForEAO'">{{ c.isForEAO ? 'Y' : 'N' }}</td>
                 <td data-title="'Status'" title: 'Status' filter="{'isPublished':'text'}" sortable="'isPublished'">
                     <span class="label label-success" ng-if="c.isPublished">PUBLISHED</span>
                     <span class="label label-unpublished" ng-if="!c.isPublished">UNPUBLISHED</span>
