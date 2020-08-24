@@ -86,11 +86,6 @@ buildprod.sh
 runit.sh
 runprod.sh
 
-# Sonar Runner
-# ============
-/sonar-runner/.gradle
-/sonar-runner/build
-
 # Automated Functional Tests
 # ============
 **/.gradle
