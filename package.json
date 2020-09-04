@@ -46,7 +46,7 @@
     "minimatch": "3.0.4",
     "minio": "^6.0.0",
     "moment": "2.22.1",
-    "mongodb": "3.0.8",
+    "mongodb": "3.1.13",
     "mongodb-core": "3.0.8",
     "mongoose": "4.13.17",
     "morgan": "1.9.0",
