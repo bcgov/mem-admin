@@ -63,7 +63,7 @@
     "request-promise-native": "1.0.5",
     "rss": "1.2.2",
     "serve-favicon": "2.5.0",
-    "socket.io": "2.1.1",
+    "socket.io": "2.4.0",
     "spooky": "0.2.5",
     "swig": "1.4.2",
     "tiny-jsonrpc": "2.0.1",
