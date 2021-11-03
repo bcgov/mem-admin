@@ -69,7 +69,7 @@
     "tiny-jsonrpc": "2.0.1",
     "tree-model": "1.0.7",
     "uid-safe": "2.1.5",
-    "validator": "9.4.1"
+    "validator": "13.7.0"
   },
   "devDependencies": {
     "babel-core": "6.26.3",
