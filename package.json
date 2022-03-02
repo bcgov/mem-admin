@@ -105,7 +105,7 @@
     "karma-jasmine": "1.1.2",
     "karma-ng-html2js-preprocessor": "1.0.0",
     "karma-spec-reporter": "0.0.32",
-    "karma": "2.0.2",
+    "karma": "6.3.16",
     "kerberos": "0.0.23",
     "load-grunt-tasks": "4.0.0",
     "mocha": "5.2.0",
