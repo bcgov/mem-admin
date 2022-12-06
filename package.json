@@ -58,7 +58,7 @@
     "passport-local": "1.0.0",
     "passport-unique-token": "0.1.4",
     "promise": "8.0.1",
-    "qs": "6.5.2",
+    "qs": "6.5.3",
     "request": "2.88.0",
     "request-promise-native": "1.0.5",
     "rss": "1.2.2",
